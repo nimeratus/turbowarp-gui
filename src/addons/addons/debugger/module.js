@@ -110,6 +110,11 @@ const stepUnsteppedThreads = (lastSteppedThread) => {
   const threads = vm.runtime.threads;
   const startingIndex = getThreadIndex(lastSteppedThread);
   if (startingIndex !== -1) {
+    if(vm.runtime.sequencer.subtick) {
+      vm.runtime.sequencer.subtick.init(threads, false);
+      vm.runtime.sequencer.subtick.threadIndex = startingIndex;
+      return;
+    }
     for (let i = startingIndex; i < threads.length; i++) {
       const thread = threads[i];
       const status = thread.status;
@@ -119,6 +124,7 @@ const stepUnsteppedThreads = (lastSteppedThread) => {
       }
     }
   }
+  vm.runtime.threads = vm.runtime.threads.filter(thread => !isThreadStopped(thread));
 };
 
 export const setPaused = (_paused) => {
@@ -166,7 +172,6 @@ export const setPaused = (_paused) => {
     const lastSteppedThread = steppingThread;
     // This must happen after the "change" event is fired to fix https://github.com/ScratchAddons/ScratchAddons/issues/4281
     stepUnsteppedThreads(lastSteppedThread);
-    vm.runtime.threads = vm.runtime.threads.filter(thread => !isThreadStopped(thread));
     steppingThread = null;
   }
 };
