@@ -62,12 +62,11 @@ export default async function createThreadsTab({ debug, addon, console, msg }) {
       }
     }
 
-    if (row.type === "stopped") {
-      const el = document.createElement('div');
-      el.className = "sa-debugger-thread-stopped";
-      // TODO: get infrastructure to translate this
-      el.textContent = "(stopped)";
-      root.appendChild(el);
+    if (row.type === "thread-stopped") {
+      const div = document.createElement("div");
+      div.textContent = msg("thread-stopped");
+      div.className = "sa-debugger-thread-stopped";
+      root.appendChild(div);
     }
 
     // TW: compiler-related support
@@ -167,7 +166,7 @@ export default async function createThreadsTab({ debug, addon, console, msg }) {
           // TW: compiler-related support
           thread === runningThread && (
             thread.isCompiled || (
-              blockId === runningThread.peekStack() &&
+          blockId === runningThread.peekStack() &&
               stackFrameIdx === runningThread.stackFrames.length - 1
             )
           );
@@ -196,10 +195,10 @@ export default async function createThreadsTab({ debug, addon, console, msg }) {
         }
       }
 
-      if(isThreadStopped(thread)) {
+      if (isThreadStopped(thread)) {
         result.push({
-          type: "stopped",
-          depth
+          type: "thread-stopped",
+          depth,
         });
       }
 

@@ -87,6 +87,7 @@
     "debugger/tab-threads": "Threads",
     "debugger/tab-timing": "Timing",
     "debugger/thread": "Thread {id}",
+    "debugger/thread-stopped": "(stopped)",
     "debugger/timing-average-time": "Average Time",
     "debugger/timing-call-count": "Call Count",
     "debugger/timing-disable-compiler": "Disable compiler",
